@@ -1858,7 +1858,7 @@ class VoipStackCard extends HTMLElement {
     this._syncVideoDurationTimer(visualMediaVisible);
     if (els.hangupPeer) {
       const normalizedState = espState.toLowerCase();
-      els.hangupState.textContent = this._stopping
+      els.hangupState.textContent = this._t(this._stopping
         ? "Ending"
         : (this._starting || ["calling", "connecting"].includes(normalizedState))
           ? "Calling"
@@ -1868,8 +1868,8 @@ class VoipStackCard extends HTMLElement {
               ? "Answering"
               : normalizedState === "terminating"
                 ? "Ending"
-            : "In call";
-      els.hangupPeer.textContent = caller || destination || "Active call";
+            : "In call");
+      els.hangupPeer.textContent = caller || destination || this._t("Active call");
       els.hangupDuration.textContent = this._formatVideoCallDuration();
     }
     const keypadOpen = this._keypadOpen();
@@ -3070,16 +3070,16 @@ class VoipStackCard extends HTMLElement {
         if (select.dataset.options !== key) {
           const defaultOption = document.createElement("option");
           defaultOption.value = "";
-          defaultOption.textContent = kind === "audiooutput"
+          defaultOption.textContent = this._t(kind === "audiooutput"
             ? "System default"
-            : "Browser default";
-          if (!active[kind]) defaultOption.textContent += " - active";
+            : "Browser default");
+          if (!active[kind]) defaultOption.textContent += this._t(" - active");
           const options = [defaultOption];
           for (const device of available) {
             const option = document.createElement("option");
             option.value = device.deviceId;
             option.textContent = device.label +
-              (device.deviceId === active[kind] ? " - active" : "");
+              (device.deviceId === active[kind] ? this._t(" - active") : "");
             options.push(option);
           }
           if (wanted && !available.some((device) => device.deviceId === wanted)) {
